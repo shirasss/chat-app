@@ -1,8 +1,5 @@
 # set base image (host OS)
 FROM python:3.8
-# --- NETFREE CERT INTSALL ---
-
-# --- END NETFREE CERT INTSALL ---
 # set the working directory in the container
 WORKDIR /chatApp
 # copy the dependencies file to the working directory

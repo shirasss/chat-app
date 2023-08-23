@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template,Markup,request,flash,redirect,url_for
+from flask import Flask, render_template,Markup,request,redirect,url_for
 import csv
 
 app = Flask(__name__)
@@ -9,27 +9,26 @@ def homePage():
     if request.method == 'POST':
        username = request.form['username']
        password = request.form['password']
-       ok,msg= check_if_user_exists(username,password)
-       if ok == False:
-           return msg
-       else:
-           return redirect('/login')
+       return check_if_user_exists(username,password)
     else:
         return render_template('register.html')
     
 def check_if_user_exists(username, password):
-    filename = "users.csv"
+    filename = "user.csv"
     with open(filename, 'r',newline="") as file:
-        csv_reader = csv.reader(file)
+        csv_reader = csv.reader(file) 
         for row in csv_reader:
-            name, pws= row[0],row[1]  # Split the line using ","
+            name, pws= row[0],row[1] 
             if name == username:
                 if pws == password:
-                    return True, "Login successful"
+                   return redirect('/login')
                 else:
-                    return False, "User exists, but the password is incorrect"
+                    return "User name already exists"
     
-    return False,"User does not exist"
+    with open(filename,"a") as file:
+        writer = csv.writer(file)
+        writer.writerow([username, password])
+        return redirect('/login') 
 # def check_if_user_exist(username,password):
 #     filename = "users.csv"
 #     with open(filename, 'r') as file:
@@ -41,12 +40,23 @@ def check_if_user_exists(username, password):
 #                  if pws!=password:
 #                     return "user name alreadt exists"
 
-    
+@app.route('/login', methods=['GET','POST'])
+def loginPage():
+#    if request.method == 'POST':
+        # username = request.form['username']
+        # userpass = request.form['password']
+        # user_exists = check_if_user_exists(username, userpass)
+        # if user_exists:
+        #     return render_template('login.html')
+   return render_template('login.html')
+
+
 # @app.route('/login', methods=['POST'])
 # def loginPage():
 #     # Handle user login
 #     # Validate user credentials and generate a session token
-#     pass
+#     return render_template('login.html')
+
 
 
 # @app.route('/lobby', methods=['GET'])
