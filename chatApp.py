@@ -6,11 +6,11 @@ app = Flask(__name__)
  
 @app.route('/', methods=['POST','GET'])
 def home():
-    return Flask.redirect('/register')
+    return redirect('/register')
 
 @app.route('/register', methods=['POST','GET'])
 def homePage():
-    return "Flask.redirect('/register')"
+    return render_template('/register.html')
 
 
 
@@ -20,15 +20,15 @@ def loginPage():
         user_data = load_user_data()
         username = request.json.get('username')
         password = request.json.get('password')
+        print(user_data)
         if username in user_data:
             print(user_data)
             stored_password = user_data[username]
             if encode_password(password) == stored_password:
-                return render_template('login.html')
+                return redirect('/lobby')
             else:
-                return render_template('login.html')
+                return redirect('/login')
     else:
-        print ("render")
         return render_template('login.html')
 
 
@@ -49,15 +49,16 @@ def load_user_data():
     return user_data
 
 
-@app.route('/lobby', methods=['GET'])
+@app.route('/lobby', methods=['GET','POST'])
 def lobby():
     # Display the main lobby page where users can create or enter chat rooms
     return render_template('lobby.html')
     pass
 
-@app.route('/chat/<room>', methods=['GET'])
+@app.route('/chat/<room>', methods=['GET','POST'])
 def chat_room(room):
     # Display the specified chat room with all messages sent
+    return render_template('chat.html')
     pass
 
 
