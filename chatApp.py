@@ -14,6 +14,30 @@ def homePage():
 
 
 
+@app.route('/lobby', methods=['GET'])
+def lobby():
+    # Display the main lobby page where users can create or enter chat rooms
+    create_a_room(request.json.get('new_room'))
+    pass
+
+def create_a_room(room):
+    rooms = os.listdir('./rooms')
+    if room not in rooms:
+        room_file = open('${room}.txt', 'w')
+        room_file.write('first line')###########
+        room_file.close()
+        return redirect(url_for('/chat/${room}'))
+    else:
+        return redirect(url_for('/lobby'))
+        
+
+
+@app.route('/chat/<room>', methods=['GET'])
+def chat_room(room):
+    # Display the specified chat room with all messages sent
+    pass
+
+
 @app.route('/login', methods=['POST','GET'])
 def loginPage():
     if request.method=='POST':
@@ -49,16 +73,15 @@ def load_user_data():
     return user_data
 
 
-@app.route('/lobby', methods=['GET','POST'])
+@app.route('/lobby', methods=['GET'])
 def lobby():
     # Display the main lobby page where users can create or enter chat rooms
     return render_template('lobby.html')
     pass
 
-@app.route('/chat/<room>', methods=['GET','POST'])
+@app.route('/chat/<room>', methods=['GET'])
 def chat_room(room):
     # Display the specified chat room with all messages sent
-    return render_template('chat.html')
     pass
 
 
@@ -66,4 +89,11 @@ def chat_room(room):
 # Main function to run the application
 if __name__ == '__main__':
    app.run(host="0.0.0.0")
+
+
+@app.route('/logout', methods=['POST'])
+def logOut():
+    session.pop('username', 'password')
+    messagebox.showinfo('Logout successfull') #alert
+    return Flask.redirect(url_for('login'))
 
