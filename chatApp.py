@@ -1,20 +1,17 @@
 
-from flask import Flask, render_template
+from flask import Flask, render_template,redirect,request,url_for
 import base64
-from tkinter import messagebox
-import os
-
+import csv
 app = Flask(__name__)
  
-@app.route('/')
-def homePage():
-    return Flask.redirect(url_for('/register'))
+@app.route('/', methods=['POST','GET'])
+def home():
+    return Flask.redirect('/register')
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['POST','GET'])
 def homePage():
-    # Handle user login
-    # Validate user credentials and generate a session token 
-    pass
+    return "Flask.redirect('/register')"
+
 
 
 @app.route('/lobby', methods=['GET'])
@@ -41,21 +38,23 @@ def chat_room(room):
     pass
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['POST','GET'])
 def loginPage():
-    user_data = load_user_data()
-    username = request.json.get('username')
-    password = request.json.get('password')
-
-    if username in user_data:
-        stored_password = user_data[username]
-        
-        if encode_password(password) == stored_password:
-            return redirect(url_for('/lobby'))
-        else:
-            return redirect(url_for('/login'))
+    if request.method=='POST':
+        user_data = load_user_data()
+        username = request.json.get('username')
+        password = request.json.get('password')
+        if username in user_data:
+            print(user_data)
+            stored_password = user_data[username]
+            if encode_password(password) == stored_password:
+                return render_template('login.html')
+            else:
+                return render_template('login.html')
     else:
-        return redirect(url_for('/login'))
+        print ("render")
+        return render_template('login.html')
+
 
 def encode_password(password):
     return base64.encode("Encode this text")
@@ -65,7 +64,7 @@ def decode_password(password):
 
 def load_user_data():
     user_data = {}
-    with open('user_data.csv', 'r') as csv_file:
+    with open('users.csv', 'r') as csv_file:
         csv_reader = csv.reader(csv_file)
         for row in csv_reader:
             username = row[0]
