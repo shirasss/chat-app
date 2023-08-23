@@ -4,13 +4,14 @@ app = Flask(__name__)
  
 @app.route('/')
 def homePage():
+    url_for('/register')
     return render_template('register.html')
-if __name__ == '__main__':
-   app.run(host="0.0.0.0")
 
-
-
-
+@app.route('/register', methods=['POST'])
+def loginPage():
+    # Handle user login
+    # Validate user credentials and generate a session token
+    pass
 
 
 @app.route('/login', methods=['POST'])
@@ -34,4 +35,5 @@ def chat_room(room):
 
 # Main function to run the application
 if __name__ == '__main__':
-    app.run(debug=True)
+   app.run(host="0.0.0.0")
+
