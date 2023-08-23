@@ -1,5 +1,6 @@
 
-from flask import Flask, render_template
+from flask import Flask, render_template,session,request
+from tkinter import messagebox
 app = Flask(__name__)
  
 @app.route('/')
@@ -19,10 +20,19 @@ def loginPage():
     # Validate user credentials and generate a session token
     pass
 
+@app.route('/logout', methods=['POST'])
+def logOut():
+    session.pop('username', 'password')
+    messagebox.showinfo('Logout successfull') #alert
+    return Flask.redirect(url_for('login'))
+
 
 @app.route('/lobby', methods=['GET'])
 def lobby():
     # Display the main lobby page where users can create or enter chat rooms
+    #for room in 
+
+    
     pass
 
 @app.route('/chat/<room>', methods=['GET'])
