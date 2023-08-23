@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template,Markup,request,flash
+from flask import Flask, render_template,Markup,request,flash,redirect,url_for
 import csv
 
 app = Flask(__name__)
@@ -9,7 +9,11 @@ def homePage():
     if request.method == 'POST':
        username = request.form['username']
        password = request.form['password']
-       return check_if_user_exists(username,password)
+       ok,msg= check_if_user_exists(username,password)
+       if ok == False:
+           return msg
+       else:
+           return redirect('/login')
     else:
         return render_template('register.html')
     
@@ -21,11 +25,11 @@ def check_if_user_exists(username, password):
             name, pws= row[0],row[1]  # Split the line using ","
             if name == username:
                 if pws == password:
-                    return "User exists and password is correct"
+                    return True, "Login successful"
                 else:
-                    return "User exists, but the password is incorrect"
+                    return False, "User exists, but the password is incorrect"
     
-    return "User does not exist"
+    return False,"User does not exist"
 # def check_if_user_exist(username,password):
 #     filename = "users.csv"
 #     with open(filename, 'r') as file:
