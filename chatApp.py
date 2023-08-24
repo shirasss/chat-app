@@ -75,6 +75,8 @@ def login():
 
 @app.route('/lobby', methods=['GET','POST'])
 def lobby():#session
+    if not session.get("user_name"):
+        return redirect("/")
     if request.method == 'POST':
         create_a_room(request.form['new_room'])
     else:
@@ -98,16 +100,20 @@ def enter_room(room):
 
 @app.route('/logout', methods=['GET','POST'])
 def logOut():
-    session.pop('username', 'password')
+    session.pop('user_name', 'user_password')
     return redirect('login')
 
 @app.route('/chat/<room>', methods=['GET','POST'])
 def chat_room(room):
+    if not session.get("username"):
+        return redirect("/")
     # Display the specified chat room with all messages sent
     return render_template('chat.html',room=room)
 
 @app.route('/api/chat/<room>', methods=['GET','POST'])
 def updateChat(room):
+    if not session.get("username"):
+        return redirect("/")
     print("add msg")
     filename = "./rooms/"+room+".txt"
     if request.method == 'POST':
