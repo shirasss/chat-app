@@ -2,7 +2,7 @@
 FROM python:3.8
 # # --- NETFREE CERT INTSALL ---
 ENV room_files_path  "./rooms/"
-
+ENV FLASK_ENV development
 # set the working directory in the container
 WORKDIR /chatApp
 # copy the dependencies file to the working directory
