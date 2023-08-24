@@ -1,2 +1,2 @@
-docker build -t  chat-img .
-docker run --name chat-run -p 8000:5000 chat-img 
+docker build -t chat-img .
+docker run -p 5000:5000 chat-img 
