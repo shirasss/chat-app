@@ -1,2 +1,2 @@
-docker stop chat-run
-docker rmi chat-img
+docker stop $(docker ps -a -q)
+docker rmi -f chat-app

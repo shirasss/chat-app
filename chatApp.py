@@ -9,7 +9,7 @@ def home():
     return redirect('/register')
 
 @app.route('/register', methods=['POST','GET'])
-def homePage():
+def register():
     return render_template('/register.html')
 
 
@@ -39,7 +39,7 @@ def chat_room(room):
 
 
 @app.route('/login', methods=['POST','GET'])
-def loginPage():
+def login():
     if request.method=='POST':
         user_data = load_user_data()
         username = request.json.get('username')
