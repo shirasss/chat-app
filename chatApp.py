@@ -1,9 +1,9 @@
-
 from flask import Flask, render_template,Markup,request,redirect,url_for,session
 import csv
 import os
 import base64
 from enum import Enum
+import datetime
 from flask_session import Session
 ROOMS=[]
 class user_status(Enum):
@@ -88,10 +88,8 @@ def create_a_room(room):
             room_file.write('Wellcom To {} room!'.format(room))
             room_file.close()
             ROOMS.append(room)
-            # return render_template('lobby.html',rooms=ROOMS)
     else:
         print("The room name is already exist")
-        # return redirect(url_for('/lobby'))
         
 
 def enter_room(room):
@@ -106,12 +104,23 @@ def logOut():
 @app.route('/chat/<room>', methods=['GET','POST'])
 def chat_room(room):
     # Display the specified chat room with all messages sent
+    return render_template('chat.html',room=room)
+
+@app.route('/api/chat/<room>', methods=['GET','POST'])
+def add_msg(room):
     if request.method == 'POST':
+        filename = "/rooms/"+room+".txt"
         msg = request.form['msg']
-        return msg
-    else:
-        return render_template('chat.html')
-    
+        if "user_name" in session:
+            # Get the current date and time
+            current_datetime = datetime.datetime.now()
+            # Format the date and time as a string
+            formatted_datetime = current_datetime.strftime("[%Y-%m-%d %H:%M:%S]")
+            with open(filename,"a") as file:
+                file.write(formatted_datetime+" "+session.get('user_name')+":"+msg)
+    with open(filename,"r") as file:
+        room_data = file.read()
+        return room_data
 
 
 def encode_password(password):
