@@ -6,6 +6,7 @@ from enum import Enum
 import datetime
 from flask_session import Session
 ROOMS=[]
+
 class user_status(Enum):
     PASS_AND_NAME_MATCH = 1
     NAME_MATCH = 2
@@ -14,6 +15,8 @@ class user_status(Enum):
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SECRET_KEY'] = 'your_secret_key'
+
 Session(app)
 
 @app.route('/',methods=['GET','POST'] )
@@ -74,7 +77,7 @@ def login():
 
 
 @app.route('/lobby', methods=['GET','POST'])
-def lobby():#session
+def lobby():
     if not session.get("user_name"):
         return redirect("/")
     if request.method == 'POST':
@@ -85,7 +88,6 @@ def lobby():#session
 
 def create_a_room(room):
     if room not in ROOMS:
-        #try:
             room_file = open('./rooms/{}.txt'.format(room), 'w')
             room_file.write('Wellcom To {} room!'.format(room))
             room_file.close()
@@ -105,14 +107,14 @@ def logOut():
 
 @app.route('/chat/<room>', methods=['GET','POST'])
 def chat_room(room):
-    if not session.get("username"):
+    if not session.get("user_name"):
         return redirect("/")
     # Display the specified chat room with all messages sent
     return render_template('chat.html',room=room)
 
 @app.route('/api/chat/<room>', methods=['GET','POST'])
 def updateChat(room):
-    if not session.get("username"):
+    if not session.get("user_name"):
         return redirect("/")
     print("add msg")
     filename = "./rooms/"+room+".txt"
