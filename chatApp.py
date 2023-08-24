@@ -69,7 +69,7 @@ def login():
         status,msg=check_if_user_exists(username,password)
         if status == user_status.PASS_AND_NAME_MATCH.value:
             session['user_name'] = username
-            # session['user_password'] = password
+            session['user_password'] = password
             return redirect("/lobby") 
         else:
             return render_template('login.html')
@@ -89,7 +89,7 @@ def lobby():
 
 def create_a_room(room):
     if room not in ROOMS:
-            room_file = open(os.getenv('ROOMS_DIR')+"/"+room+".txt", 'w')
+            room_file = open(os.getenv('ROOMS_DIR')+room+".txt", 'w')
             room_file.write('Wellcom To {} room!'.format(room))
             room_file.close()
             ROOMS.append(room)
@@ -103,8 +103,7 @@ def enter_room(room):
 
 @app.route('/logout', methods=['GET','POST'])
 def logOut():
-    # session.pop('user_name', 'user_password')
-    session.pop('user_name')
+    session.pop('user_name', 'user_password')
     return redirect('login')
 
 @app.route('/chat/<room>', methods=['GET','POST'])
@@ -118,7 +117,7 @@ def chat_room(room):
 def updateChat(room):
     if not session.get("user_name"):
         return redirect("/")
-    filename = os.getenv('ROOMS_DIR')+"/"+room+".txt"
+    filename = os.getenv('ROOMS_DIR')+room+".txt"
     if request.method == 'POST':
         msg = request.form['msg']
         if "user_name" in session:

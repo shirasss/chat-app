@@ -1,7 +1,6 @@
 # set base image (host OS)
 FROM python:3.8
 # # --- NETFREE CERT INTSALL ---
-ENV room_files_path  "./rooms/"
 ENV FLASK_ENV development
 # set the working directory in the container
 WORKDIR /chatApp
@@ -9,7 +8,7 @@ WORKDIR /chatApp
 COPY requirements.txt .
 # install dependencies
 RUN pip install -r requirements.txt
-ENV ROOMS_DIR='./rooms'
+ENV ROOMS_DIR='./rooms/'
 # copy the content of the local src directory to the working directory
 COPY . .
 # command to run on container start
