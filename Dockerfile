@@ -1,5 +1,6 @@
 # set base image (host OS)
 FROM python:3.8
+<<<<<<< HEAD
 # # --- NETFREE CERT INTSALL ---
 # ADD https://netfree.link/dl/unix-ca.sh /home/netfree-unix-ca.sh 
 # RUN cat  /home/netfree-unix-ca.sh | sh
@@ -7,6 +8,8 @@ FROM python:3.8
 # ENV REQUESTS_CA_BUNDLE=/etc/ca-bundle.crt
 # ENV SSL_CERT_FILE=/etc/ca-bundle.crt
 # # --- END NETFREE CERT INTSALL ---
+=======
+>>>>>>> a2fabc1dc24df86be23acbb0ce3d1895a80851ae
 # set the working directory in the container
 WORKDIR /chatApp
 # copy the dependencies file to the working directory
