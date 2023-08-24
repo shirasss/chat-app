@@ -107,9 +107,10 @@ def chat_room(room):
     return render_template('chat.html',room=room)
 
 @app.route('/api/chat/<room>', methods=['GET','POST'])
-def add_msg(room):
+def updateChat(room):
+    print("add msg")
+    filename = "./rooms/"+room+".txt"
     if request.method == 'POST':
-        filename = "/rooms/"+room+".txt"
         msg = request.form['msg']
         if "user_name" in session:
             # Get the current date and time
@@ -117,7 +118,7 @@ def add_msg(room):
             # Format the date and time as a string
             formatted_datetime = current_datetime.strftime("[%Y-%m-%d %H:%M:%S]")
             with open(filename,"a") as file:
-                file.write(formatted_datetime+" "+session.get('user_name')+":"+msg)
+                file.write("\n"+formatted_datetime+"   "+session.get('user_name')+": "+msg)
     with open(filename,"r") as file:
         room_data = file.read()
         return room_data
