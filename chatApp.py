@@ -5,7 +5,7 @@ import os
 import base64
 from enum import Enum
 from flask_session import Session
-
+ROOMS=[]
 class user_status(Enum):
     PASS_AND_NAME_MATCH = 1
     NAME_MATCH = 2
@@ -72,11 +72,30 @@ def login():
     else:
         return render_template('login.html')
 
+
 @app.route('/lobby', methods=['GET','POST'])
-def lobby():
-    # Display the main lobby page where users can create or enter chat rooms
-    # return f"lobby{session.get('user_name')}"\
-    return render_template('lobby.html')
+def lobby():#session
+    if request.method == 'POST':
+        create_a_room(request.form['new_room'])
+    else:
+        enter_room(request.args.get('room'))
+    return render_template('lobby.html', room_names=ROOMS)
+
+def create_a_room(room):
+    if room not in ROOMS:
+        #try:
+            room_file = open('rooms/{}.txt'.format(room), 'w')
+            room_file.write('Wellcom To {} room!'.format(room))
+            room_file.close()
+            ROOMS.append(room)
+            # return render_template('lobby.html',rooms=ROOMS)
+    else:
+        print("The room name is already exist")
+        # return redirect(url_for('/lobby'))
+        
+
+def enter_room(room):
+    return render_template('chat.html',room=room)
 
 
 @app.route('/logout', methods=['GET','POST'])
@@ -94,12 +113,6 @@ def chat_room(room):
         return render_template('chat.html')
     
 
-# def encode_password(password):
-#     return base64.b64encode(password.encode())
-
-
-# def decode_password(password):
-#     return base64.b64decode(password)
 
 def encode_password(password):
     pass_bytes = password.encode('ascii')
