@@ -18,6 +18,11 @@ Session(app)
 
 @app.route('/',methods=['GET','POST'] )
 def homePage():
+    return redirect("/register") 
+    
+
+@app.route('/register',methods=['GET','POST'] )
+def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -63,17 +68,12 @@ def login():
             session['user_name'] = username
             session['user_password'] = password
             return redirect("/lobby") 
-        # if username in user_data:
-        #     stored_password = user_data[username]
-        #     if encode_password(password) == stored_password:
-        #         # return render_template('lobby.html')
-        #         return "in lobby"
         else:
             return render_template('login.html')
     else:
         return render_template('login.html')
 
-@app.route('/lobby', methods=['GET'])
+@app.route('/lobby', methods=['GET','POST'])
 def lobby():
     # Display the main lobby page where users can create or enter chat rooms
     # return f"lobby{session.get('user_name')}"\
