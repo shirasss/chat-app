@@ -7,6 +7,8 @@ ENV NODE_EXTRA_CA_CERTS=/etc/ca-bundle.crt
 ENV REQUESTS_CA_BUNDLE=/etc/ca-bundle.crt
 ENV SSL_CERT_FILE=/etc/ca-bundle.crt
 # # --- END NETFREE CERT INTSALL ---
+ENV FLASK_ENV development
+ENV ROOMS []
 # set the working directory in the container
 WORKDIR /chatApp
 # copy the dependencies file to the working directory
