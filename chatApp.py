@@ -86,7 +86,7 @@ def lobby():#session
 def create_a_room(room):
     if room not in ROOMS:
         #try:
-            room_file = open('rooms/{}.txt'.format(room), 'w')
+            room_file = open('./rooms/{}.txt'.format(room), 'w')
             room_file.write('Wellcom To {} room!'.format(room))
             room_file.close()
             ROOMS.append(room)
