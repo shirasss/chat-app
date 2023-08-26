@@ -12,6 +12,7 @@ ENV FLASK_ENV development
 WORKDIR /chatApp
 # copy the dependencies file to the working directory
 COPY requirements.txt .
+ENV TZ 'Israel'
 # install dependencies
 RUN pip install -r requirements.txt
 ENV DATA_DIR='./data/'

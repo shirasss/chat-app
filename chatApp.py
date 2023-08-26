@@ -129,9 +129,9 @@ def updateChat(room):
         msg = request.form['msg']
         if "user_name" in session:
             # Get the current date and time
-            current_datetime = datetime.datetime.now()
+            # current_datetime = datetime.datetime.now()
             # Format the date and time as a string
-            formatted_datetime = current_datetime.strftime("[%Y-%m-%d %H:%M:%S]")
+            formatted_datetime = datetime.datetime.now().strftime("[%d/%m/%Y %H:%M:%S]")
             with open(filename,"a") as file:
                 file.write("\n"+formatted_datetime+"   "+session.get('user_name')+": "+msg)
     with open(filename,"r") as file:
