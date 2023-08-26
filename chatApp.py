@@ -6,8 +6,16 @@ from enum import Enum
 import datetime
 from flask_session import Session
 
+def get_filenames_without_extensions(directory):
+  files = os.listdir(directory)
+  filenames_without_extensions = []
+  for file in files:
+    filename, extension = os.path.splitext(file)
+    filenames_without_extensions.append(filename)
+  return filenames_without_extensions
 
-ROOMS=[]
+# ROOMS=get_filenames_without_extensions(os.getenv('ROOMS_DIR'))
+
 class user_status(Enum):
     PASS_AND_NAME_MATCH = 1
     NAME_MATCH = 2
@@ -42,7 +50,7 @@ def register():
         return render_template('register.html')
     
 def check_if_user_exists(username, password):
-    filename = "user.csv"
+    filename = os.getenv('DATA_DIR')+"user.csv"
     with open(filename, 'r',newline="") as file:
         csv_reader = csv.reader(file) 
         for row in csv_reader:
@@ -56,7 +64,7 @@ def check_if_user_exists(username, password):
 
 
 def write_to_csv(username,password):
-    filename="user.csv"
+    filename = os.getenv('DATA_DIR')+"user.csv"
     with open(filename,"a") as file:
         writer = csv.writer(file)
         writer.writerow([username, password])
@@ -85,14 +93,13 @@ def lobby():
         create_a_room(request.form['new_room'])
     else:
         enter_room(request.args.get('room'))
-    return render_template('lobby.html', room_names=ROOMS)
+    return render_template('lobby.html', room_names=get_filenames_without_extensions(os.getenv('ROOMS_DIR')))
 
 def create_a_room(room):
-    if room not in ROOMS:
+    if room not in get_filenames_without_extensions(os.getenv('ROOMS_DIR')):
             room_file = open(os.getenv('ROOMS_DIR')+room+".txt", 'w')
             room_file.write('Wellcom To {} room!'.format(room))
             room_file.close()
-            ROOMS.append(room)
     else:
         print("The room name is already exist")
         
@@ -143,6 +150,7 @@ def decode_password(password):
     pass_bytes = base64.b64decode(base64_bytes)
     password = pass_bytes.decode('ascii')
     return password
+
 
 if __name__ == '__main__':
    app.run(host="0.0.0.0")
