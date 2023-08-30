@@ -14,7 +14,6 @@ else
   commit_hash=$2
 fi
 
-echo vertion commit_hash
 
 appname="chat-app"
 # Build the Docker image
