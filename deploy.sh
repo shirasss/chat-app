@@ -6,9 +6,9 @@ read version
 echo "Enter the commit hash: "
 read commit_hash
 
-app-name='chat-app'
+appname="chat-app"
 # Build the Docker image
-docker build -t ${app-name}:${version} .
+docker build -t ${appname}:${version} .
 
 # Tag the image with the commit hash
 git tag v${version} ${commit_hash}
