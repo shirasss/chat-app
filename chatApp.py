@@ -1,6 +1,6 @@
 from flask import Flask, render_template,request,redirect,url_for,session
 import csv
-import os
+import os,re
 import base64
 from enum import Enum
 import datetime
@@ -118,15 +118,33 @@ def chat_room(room):
     # Display the specified chat room with all messages sent
     return render_template('chat.html',room=room)
 
+# @app.route('/api/clear/<room>', methods=['POST','GET'])
+# def clear_room_data(room):
+#     if not session.get("user_name"):
+#         return redirect("/")
+#     filename = os.getenv('ROOMS_DIR')+room+".txt"
+#     with open(filename, "wb") as file: 
+#         file.truncate(0)      
+#         file.close() 
+#     return "success" 
+
 @app.route('/api/clear/<room>', methods=['POST','GET'])
-def clear_room_data(room):
+def clear_room_user_data(room):
     if not session.get("user_name"):
         return redirect("/")
     filename = os.getenv('ROOMS_DIR')+room+".txt"
-    with open(filename, "wb") as file: 
-        file.truncate(0)      
-        file.close() 
-    return "success" 
+    name_to_remove= session['user_name']
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+    patt = r"^\[.+\]   {}: (.+)$".format(name_to_remove)
+    with open(filename, 'w') as f:
+        for line in lines:
+            if not re.match(patt, line):
+                f.write(line)
+    return "success"
+
+# patt = r"^\[.+\]   (.+): (.+)$"
+# re.match(patt, line):
 
 @app.route('/api/chat/<room>', methods=['GET','POST'])
 def updateChat(room):
