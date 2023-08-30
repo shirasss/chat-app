@@ -13,7 +13,13 @@
         if (room=="") room = "general";
         return "/api/chat/"+room;
       }
-  
+
+      function roomClear() {
+        var room = window.location.href.substring(window.location.href.lastIndexOf("/")+1);
+        if (room=="") room = "general";
+        $.post("/api/clear/"+room, $("#clearroom").serialize() );
+      }
+      
       function updateChat() {
         $.get(room(), function(data) {
           $("#chatbox").text(data);
@@ -28,6 +34,7 @@
       $(document).ready(function() {
         $("#chatbox").text("Loading chat...");
         $("#sendBtn").click(sendmessage)
+        $("#clear").click(roomClear)
         window.setTimeout(updateChat, 1500);
       });
   
@@ -42,6 +49,9 @@
       <pre id="chatbox">Loading...</pre>
       
       <br>
+      <form id="clearroom" method="POST">
+        <input id="clear" type="button" value="clear">
+      </form>
       <br>
       <a href="/lobby">Back to lobby</a>
       <br>

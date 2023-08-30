@@ -1,3 +1,4 @@
+#!/bin/bash
 docker volume create chat-app-data
 docker build -t  chat-app:v0.0.0 .
 # docker run --name chat-run -p 5000:5000 chat-app 

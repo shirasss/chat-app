@@ -120,6 +120,16 @@ def chat_room(room):
     # Display the specified chat room with all messages sent
     return render_template('chat.html',room=room)
 
+@app.route('/api/clear/<room>', methods=['POST','GET'])
+def clear_rooms_data(room):
+    if not session.get("user_name"):
+        return redirect("/")
+    filename = os.getenv('ROOMS_DIR')+room+".txt"
+    with open(filename, "wb") as file: 
+        file.truncate(0)      
+        file.close() 
+    return "success" 
+
 @app.route('/api/chat/<room>', methods=['GET','POST'])
 def updateChat(room):
     if not session.get("user_name"):
@@ -150,6 +160,8 @@ def decode_password(password):
     pass_bytes = base64.b64decode(base64_bytes)
     password = pass_bytes.decode('ascii')
     return password
+
+
 
 
 if __name__ == '__main__':
