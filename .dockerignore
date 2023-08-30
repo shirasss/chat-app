@@ -33,3 +33,4 @@
 LICENSE
 README.md
 large.dockerfile
+deploy.sh

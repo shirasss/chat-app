@@ -14,8 +14,6 @@ def get_filenames_without_extensions(directory):
     filenames_without_extensions.append(filename)
   return filenames_without_extensions
 
-# ROOMS=get_filenames_without_extensions(os.getenv('ROOMS_DIR'))
-
 class user_status(Enum):
     PASS_AND_NAME_MATCH = 1
     NAME_MATCH = 2
