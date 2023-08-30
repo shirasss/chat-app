@@ -10,9 +10,11 @@ if [ $# -eq 0 ]; then
     read commit_hash
 else
   # Arguments were passed, so use them
-  first_parameter=$1
-  second_parameter=$2
+  version=$1
+  commit_hash=$2
 fi
+
+echo vertion commit_hash
 
 appname="chat-app"
 # Build the Docker image
