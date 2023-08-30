@@ -18,7 +18,7 @@ echo vertion commit_hash
 
 appname="chat-app"
 # Build the Docker image
-docker build -t ${appname}:${version} .
+docker build -t ${appname}:v${version} .
 
 # Tag the image with the commit hash
 git tag v${version} ${commit_hash}
