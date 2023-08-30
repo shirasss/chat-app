@@ -1,5 +1,5 @@
 # set base image (host OS)
-FROM python:3.8
+FROM python:3.8-slim
 # --- NETFREE CERT INTSALL ---
 # ADD https://netfree.link/dl/unix-ca.sh /home/netfree-unix-ca.sh 
 # RUN cat  /home/netfree-unix-ca.sh | sh
