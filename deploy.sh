@@ -1,10 +1,18 @@
 #!/bin/bash
 
-# Get the version and commit hash from the user
-echo "Enter the version number: "
-read version
-echo "Enter the commit hash: "
-read commit_hash
+# Check if the script was passed any arguments
+if [ $# -eq 0 ]; then
+    # No arguments were passed, so prompt the user for them
+    # Get the version and commit hash from the user
+    echo "Enter the version number: "
+    read version
+    echo "Enter the commit hash: "
+    read commit_hash
+else
+  # Arguments were passed, so use them
+  first_parameter=$1
+  second_parameter=$2
+fi
 
 appname="chat-app"
 # Build the Docker image
