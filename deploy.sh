@@ -13,6 +13,7 @@ docker build -t ${app-name}:${version} .
 # Tag the image with the commit hash
 git tag v${version} ${commit_hash}
 
+git push origin v${version}
 # Check if the image was pushed successfully
 if [ $? -ne 0 ]; then
   echo "Error pushing image to GitHub"
