@@ -143,8 +143,6 @@ def clear_room_user_data(room):
                 f.write(line)
     return "success"
 
-# patt = r"^\[.+\]   (.+): (.+)$"
-# re.match(patt, line):
 
 @app.route('/api/chat/<room>', methods=['GET','POST'])
 def updateChat(room):
@@ -179,7 +177,7 @@ def decode_password(password):
 
 
 @app.route('/health',methods=['GET','POST'] )
-def homePage():
+def health():
     return "OK",200
 
 if __name__ == '__main__':
