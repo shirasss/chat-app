@@ -31,8 +31,9 @@ pipeline {
                     sh 'chmod u+x ./kubectl'  
                     sh './kubectl get nodes'
                     sh "./kubectl get pods --namespace=production"
+                    def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     sh "./kubectl set image deployment/deployment2 devconnect=chat:$commitHash"
-                    
+
                 }
             }
         }
