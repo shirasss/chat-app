@@ -14,12 +14,12 @@ pipeline {
 
     //         }
     // }  
-    stage('Build') {
-            steps {
-                // sh "docker-compose up -d --build"
+    // stage('Build') {
+    //         steps {
+    //             // sh "docker-compose up -d --build"
 
-            }
-    }  
+    //         }
+    // }  
     stage('Integrate Remote k8s with Jenkins ') {
       steps {
          withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'sample', contextName: '', credentialsId: 'SECRET_TOKEN', namespace: 'production', serverUrl: 'https://34.165.68.20']]) {
