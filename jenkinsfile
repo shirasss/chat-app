@@ -33,6 +33,7 @@ pipeline {
                         sh './kubectl get nodes'
                         sh "./kubectl get pods --namespace=production"
                         sh "./kubectl set image deployment/deployment2 devconnect=chat:$commitHash"
+                        sh "ץ.kubectl rollout status deployment/deployment2 --namespace=production"
                     }
                 }
             }
