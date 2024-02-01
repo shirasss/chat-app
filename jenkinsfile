@@ -9,7 +9,6 @@ pipeline {
                 script {
                     def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     sh "docker build -t chat:$commitHash ."
-
                 }
             }
         }  
@@ -20,7 +19,7 @@ pipeline {
                     // Use the commit hash as the version tag
                     def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     sh "docker tag chat:$commitHash $artifactRegistryImage:$commitHash"
-                    sh "docker push $artifactRegistryImage:$commitHash"
+                    // sh "docker push $artifactRegistryImage:$commitHash"
 
                 }
             }
@@ -32,7 +31,7 @@ pipeline {
                     sh 'chmod u+x ./kubectl'  
                     sh './kubectl get nodes'
                     sh "./kubectl get pods --namespace=production"
-                    // sh "./kubectl set image deployment/deployment2 devconnect=<new-image>"
+                    sh "./kubectl set image deployment/deployment2 devconnect=chat:$commitHash"
                 }
             }
         }
