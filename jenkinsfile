@@ -1,18 +1,18 @@
 pipeline {
-  agent any 
-  environment {
+    agent any 
+    environment {
         artifactRegistryImage = "me-west1-docker.pkg.dev/eco-tract-407114/shira-repo/chat-app"
     }
-  stages {
-    stage('Build') {
+    stages {
+        stage('Build') {
             steps {
-                def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                // Build the Docker image with the commit hash as the version tag
-                sh "docker build -t chat:$commitHash ."
-
+                script {
+                    def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                    sh "docker build -t chat:$commitHash ."
+                }
             }
-    }  
-    stage('Push to Artifact Registry') {
+        }  
+        stage('Push to Artifact Registry') {
             steps {
                 echo 'Pushing the Docker image to Artifact Registry'
                 script {
@@ -22,16 +22,16 @@ pipeline {
                 }
             }
         }
-    stage('Integrate Remote k8s with Jenkins ') {
-      steps {
-         withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'sample', contextName: '', credentialsId: 'SECRET_TOKEN', namespace: 'production', serverUrl: 'https://34.165.68.20']]) {
-          sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
-          sh 'chmod u+x ./kubectl'  
-          sh './kubectl get nodes'
-          sh "./kubectl get pods --namespace=production"
-        //   sh "./kubectl set image deployment/deployment2 devconnect=<new-image>"
-}
-      }
+        stage('Integrate Remote k8s with Jenkins ') {
+            steps {
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'sample', contextName: '', credentialsId: 'SECRET_TOKEN', namespace: 'production', serverUrl: 'https://34.165.68.20']]) {
+                    sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'  
+                    sh 'chmod u+x ./kubectl'  
+                    sh './kubectl get nodes'
+                    sh "./kubectl get pods --namespace=production"
+                    // sh "./kubectl set image deployment/deployment2 devconnect=<new-image>"
+                }
+            }
+        }
     }
-  }
 }
